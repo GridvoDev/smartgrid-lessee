@@ -9,7 +9,7 @@ const {
     createLesseeService,
     createRoleAndPermissionService
 } = require('./lib/application');
-const {MessageConsumerr} = require('./lib/kafka');
+const {MessageConsumer} = require('./lib/kafka');
 
 let app;
 let {ZOOKEEPER_SERVICE_HOST = "127.0.0.1", ZOOKEEPER_SERVICE_PORT = "2181"} = process.env;
