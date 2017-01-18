@@ -2,7 +2,7 @@ FROM node:latest
 MAINTAINER linmadan <772181827@qq.com>
 COPY ./package.json /home/smartgrid-lessee/package.json
 WORKDIR /home/smartgrid-lessee
-RUN ["npm","config","set","registry" "http://registry.npm.taobao.org"]
+RUN ["npm","config","set","registry","http://registry.npm.taobao.org"]
 RUN ["npm","install","--save-dev","mocha@2.5.3"]
 RUN ["npm","install","--save-dev","muk@0.5.2"]
 RUN ["npm","install","--save-dev","should@9.0.2"]
