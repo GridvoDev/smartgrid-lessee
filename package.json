@@ -1,5 +1,5 @@
 {
-  "name": "gridvo-lessee-authentication",
+  "name": "gridvo-lessee",
   "version": "0.0.1",
   "description": "格物平台——认证与鉴权",
   "main": "index.js",
@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "async": "^2.0.0-rc.6",
-    "bearcat": "^0.4.29",
     "body-parser": "~1.15.1",
     "gridvo-common-js": "^0.0.16",
     "multer": "~1.2.0",
