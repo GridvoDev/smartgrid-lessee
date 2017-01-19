@@ -42,6 +42,17 @@ describe('lessees route use case test', ()=> {
                     }
                     callback(null, true);
                 };
+                mockLesseeService.addStationToLessee = function (lesseeID, stationData, traceContext, callback) {
+                    if (!lesseeID || !stationData || !stationData.stationID || !stationData.stationName) {
+                        callback(null, null);
+                        return;
+                    }
+                    if (lesseeID == "noLesseeID") {
+                        callback(null, null);
+                        return;
+                    }
+                    callback(null, stationData.stationID);
+                };
                 app.set('lesseeService', mockLesseeService);
                 server = app.listen(3001, err=> {
                     if (err) {
@@ -106,70 +117,70 @@ describe('lessees route use case test', ()=> {
             });
         });
     });
-    // describe('#post:/lessees/:lesseeID/stations\n' +
-    //     'input:{stationID:"",stationName:""}\n' +
-    //     'output:{errcode:0,errmsg:"",stationID:""}', ()=> {
-    //     context('request for adding a station to the lessee', ()=> {
-    //         it('should response message with errcode:Fail if post body is illegal', done=> {
-    //             var lesseeID = "lesseeID";
-    //             var body = {};
-    //             request(server)
-    //                 .post(`/lessees/${lesseeID}/stations`)
-    //                 .send(body)
-    //                 .expect(200)
-    //                 .expect('Content-Type', /json/)
-    //                 .end((err, res)=> {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     }
-    //                     res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-    //                     done();
-    //                 });
-    //         });
-    //         it('should response message with errcode:Fail if no a such lessee', done=> {
-    //             var lesseeID = "noLesseeID";
-    //             var body = {
-    //                 stationID: "stationID",
-    //                 stationName: "stationName"
-    //             };
-    //             request(server)
-    //                 .post(`/lessees/${lesseeID}/stations`)
-    //                 .send(body)
-    //                 .expect(200)
-    //                 .expect('Content-Type', /json/)
-    //                 .end((err, res)=> {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     }
-    //                     res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-    //                     done();
-    //                 });
-    //         });
-    //         it('should response message with errcode:OK and stationID if success', done=> {
-    //             var lesseeID = "lesseeID";
-    //             var body = {
-    //                 stationID: "stationID",
-    //                 stationName: "stationName"
-    //             };
-    //             request(server)
-    //                 .post(`/lessees/${lesseeID}/stations`)
-    //                 .send(body)
-    //                 .expect(200)
-    //                 .expect('Content-Type', /json/)
-    //                 .end((err, res)=> {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     }
-    //                     res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-    //                     res.body.stationID.should.be.eql("stationID");
-    //                     done();
-    //                 });
-    //         });
-    //     });
-    // });
+    describe('#post:/lessees/:lesseeID/stations\n' +
+        'input:{stationID:"",stationName:""}\n' +
+        'output:{errcode:0,errmsg:"",stationID:""}', ()=> {
+        context('request for adding a station to the lessee', ()=> {
+            it('should response message with errcode:Fail if post body is illegal', done=> {
+                var lesseeID = "lesseeID";
+                var body = {};
+                request(server)
+                    .post(`/lessees/${lesseeID}/stations`)
+                    .send(body)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:Fail if no a such lessee', done=> {
+                var lesseeID = "noLesseeID";
+                var body = {
+                    stationID: "stationID",
+                    stationName: "stationName"
+                };
+                request(server)
+                    .post(`/lessees/${lesseeID}/stations`)
+                    .send(body)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:OK and stationID if success', done=> {
+                var lesseeID = "lesseeID";
+                var body = {
+                    stationID: "stationID",
+                    stationName: "stationName"
+                };
+                request(server)
+                    .post(`/lessees/${lesseeID}/stations`)
+                    .send(body)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        res.body.stationID.should.be.eql("stationID");
+                        done();
+                    });
+            });
+        });
+    });
     // describe('#post:/lessees/:lesseeID/stations/:stationID/members\n' +
     //     'input:{memberID: ""}\n' +
     //     'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {

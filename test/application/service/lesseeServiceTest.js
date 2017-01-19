@@ -38,6 +38,7 @@ describe('lessee service use case test', ()=> {
             it('success', done=> {
                 let lesseeData = {};
                 lesseeData.lesseeID = "lesseeID";
+                lesseeData.corpID = "corpID";
                 lesseeData.lesseeName = "lesseeName";
                 service.registerLessee(lesseeData, {}, (err, isSuccess)=> {
                     if (err) {
