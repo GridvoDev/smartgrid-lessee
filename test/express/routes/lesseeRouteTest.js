@@ -340,16 +340,25 @@ describe('lessees route use case test', ()=> {
             });
         });
     });
-    // after(done=> {
-    //     async.parallel([
-    //         function (callback) {
-    //             server.close(callback);
-    //         }], function (err, results) {
-    //         if (err) {
-    //             done(err);
-    //             return;
-    //         }
-    //         done();
-    //     });
-    // });
+    after(done=> {
+        function teardownExpress() {
+            return new Promise((resolve, reject)=> {
+                server.close(err=> {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                });
+            });
+        };
+        function* teardown() {
+            yield teardownExpress();
+        };
+        co(teardown).then(()=> {
+            done();
+        }).catch(err=> {
+            done(err);
+        });
+    });
 });
