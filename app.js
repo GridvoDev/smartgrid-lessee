@@ -1,6 +1,7 @@
 'use strict';
 const kafka = require('kafka-node');
 const express = require('express');
+const bodyParser = require('body-parser');
 const {expressZipkinMiddleware} = require("gridvo-common-js");
 const {logger, tracer} = require('./lib/util');
 const {lesseeRouter} = require('./lib/express');
@@ -37,6 +38,8 @@ initProducer.on('error', (err)=> {
     console.log(err);
 });
 app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressZipkinMiddleware({
     tracer: tracer,
     serviceName: 'smartgrid-lessee'
