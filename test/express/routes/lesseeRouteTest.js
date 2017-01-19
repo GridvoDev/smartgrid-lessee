@@ -53,6 +53,17 @@ describe('lessees route use case test', ()=> {
                     }
                     callback(null, stationData.stationID);
                 };
+                mockLesseeService.delStationFromLessee = function (lesseeID, stationID, traceContext, callback) {
+                    if (!lesseeID || !stationID) {
+                        callback(null, false);
+                        return;
+                    }
+                    if (lesseeID == "noLesseeID" || stationID == "noStationID") {
+                        callback(null, false);
+                        return;
+                    }
+                    callback(null, true);
+                };
                 app.set('lesseeService', mockLesseeService);
                 server = app.listen(3001, err=> {
                     if (err) {
@@ -248,61 +259,60 @@ describe('lessees route use case test', ()=> {
     //         });
     //     });
     // });
-    // describe('#delete:/lessees/:lesseeID/stations/:stationID\n' +
-    //     'input:{stationID:""}\n' +
-    //     'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
-    //     context('request for delete a station to the lessee', ()=> {
-    //         it('should response message with errcode:Fail if no a such lessee', done=> {
-    //             var lesseeID = "noLesseeID";
-    //             var stationID = "stationID";
-    //             request(server)
-    //                 .del(`/lessees/${lesseeID}/stations/${stationID}`)
-    //                 .expect(200)
-    //                 .expect('Content-Type', /json/)
-    //                 .end((err, res)=> {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     }
-    //                     res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-    //                     done();
-    //                 });
-    //         });
-    //         it('should response message with errcode:Fail if no a such station', done=> {
-    //             var lesseeID = "lesseeID";
-    //             var stationID = "noStationID";
-    //             request(server)
-    //                 .del(`/lessees/${lesseeID}/stations/${stationID}`)
-    //                 .expect(200)
-    //                 .expect('Content-Type', /json/)
-    //                 .end((err, res)=> {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     }
-    //                     res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-    //                     done();
-    //                 });
-    //         });
-    //         it('should response message with errcode:OK and isSuccess:true if success', done=> {
-    //             var lesseeID = "lesseeID";
-    //             var stationID = "stationID";
-    //             request(server)
-    //                 .del(`/lessees/${lesseeID}/stations/${stationID}`)
-    //                 .expect(200)
-    //                 .expect('Content-Type', /json/)
-    //                 .end((err, res)=> {
-    //                     if (err) {
-    //                         done(err);
-    //                         return;
-    //                     }
-    //                     res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-    //                     res.body.isSuccess.should.be.eql(true);
-    //                     done();
-    //                 });
-    //         });
-    //     });
-    // });
+    describe('#delete:/lessees/:lesseeID/stations/:stationID\n' +
+        'input:{stationID:""}\n' +
+        'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
+        context('request for delete a station to the lessee', ()=> {
+            it('should response message with errcode:Fail if no a such lessee', done=> {
+                var lesseeID = "noLesseeID";
+                var stationID = "stationID";
+                request(server)
+                    .del(`/lessees/${lesseeID}/stations/${stationID}`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:Fail if no a such station', done=> {
+                var lesseeID = "lesseeID";
+                var stationID = "noStationID";
+                request(server)
+                    .del(`/lessees/${lesseeID}/stations/${stationID}`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:OK and isSuccess:true if success', done=> {
+                var lesseeID = "lesseeID";
+                var stationID = "stationID";
+                request(server)
+                    .del(`/lessees/${lesseeID}/stations/${stationID}`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+        });
+    });
     describe('#post:/lessees/:corpID/change-wechat-active-state\n' +
         'input:{isActived: true}\n' +
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
