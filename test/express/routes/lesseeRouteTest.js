@@ -101,7 +101,7 @@ describe('lessees route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-                        res.body.errmsg.should.be.eql("Fail");
+                        res.body.errmsg.should.be.eql("fail");
                         done();
                     });
             });
@@ -122,7 +122,7 @@ describe('lessees route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-                        res.body.errmsg.should.be.eql("OK");
+                        res.body.errmsg.should.be.eql("ok");
                         done();
                     });
             });
@@ -334,7 +334,7 @@ describe('lessees route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-                        res.body.errmsg.should.be.eql("Fail");
+                        res.body.errmsg.should.be.eql("fail");
                         done();
                     });
             });
@@ -355,7 +355,7 @@ describe('lessees route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-                        res.body.errmsg.should.be.eql("OK");
+                        res.body.errmsg.should.be.eql("ok");
                         done();
                     });
             });
