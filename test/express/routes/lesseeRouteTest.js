@@ -64,6 +64,38 @@ describe('lessees route use case test', ()=> {
                     }
                     callback(null, true);
                 };
+                mockLesseeService.delStationFromLessee = function (lesseeID, stationID, traceContext, callback) {
+                    if (!lesseeID || !stationID) {
+                        callback(null, false);
+                        return;
+                    }
+                    if (lesseeID == "noLesseeID" || stationID == "noStationID") {
+                        callback(null, false);
+                        return;
+                    }
+                    callback(null, true);
+                };
+                mockLesseeService.delLessee = function (lesseeID, traceContext, callback) {
+                    if (!lesseeID || lesseeID == "noLesseeID") {
+                        callback(null, false);
+                        return;
+                    }
+                    callback(null, true);
+                };
+                mockLesseeService.getLessees = function (lesseeID, traceContext, callback) {
+                    if (lesseeID == "noLesseeID") {
+                        callback(null, null);
+                        return;
+                    }
+                    callback(null, []);
+                };
+                mockLesseeService.getStations = function (stationID, traceContext, callback) {
+                    if (stationID == "noStationID") {
+                        callback(null, null);
+                        return;
+                    }
+                    callback(null, []);
+                };
                 app.set('lesseeService', mockLesseeService);
                 server = app.listen(3001, err=> {
                     if (err) {
@@ -192,6 +224,102 @@ describe('lessees route use case test', ()=> {
             });
         });
     });
+    describe('#get:/lessees\n' +
+        'input:{lesseeID:""}\n' +
+        'output:{errcode:0,errmsg:"",lessees:""}', ()=> {
+        context('request for get lessee', ()=> {
+            it('should response message with errcode:Fail if post body is illegal', done=> {
+                request(server)
+                    .get(`/lessees?lesseeID=noLesseeID`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:ok', done=> {
+                request(server)
+                    .get(`/lessees?lesseeID=`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:ok', done=> {
+                request(server)
+                    .get(`/lessees?lesseeID=lesseeID`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+        });
+    });
+    describe('#get:/stations\n' +
+        'input:{stationID:""}\n' +
+        'output:{errcode:0,errmsg:"",lessees:""}', ()=> {
+        context('request for get station', ()=> {
+            it('should response message with errcode:Fail if post body is illegal', done=> {
+                request(server)
+                    .get(`/stations?stationID=noStationID`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:ok', done=> {
+                request(server)
+                    .get(`/stations?stationID=stationID`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:ok', done=> {
+                request(server)
+                    .get(`/stations?stationID=`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+        });
+    });
     // describe('#post:/lessees/:lesseeID/stations/:stationID/members\n' +
     //     'input:{memberID: ""}\n' +
     //     'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
@@ -259,6 +387,54 @@ describe('lessees route use case test', ()=> {
     //         });
     //     });
     // });
+    describe('#post:/lessees/:corpID/change-wechat-active-state\n' +
+        'input:{isActived: true}\n' +
+        'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
+        context('request for change lessee activeState', ()=> {
+            it('should response message with errcode:Fail if no a such lessee', done=> {
+                var corpID = "noCorpID";
+                var body = {
+                    isActived: true
+                };
+                request(server)
+                    .post(`/lessees/${corpID}/change-wechat-active-state`)
+                    .send(body)
+                    .set('Accept', 'application/json')
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        res.body.errmsg.should.be.eql("fail");
+                        done();
+                    });
+            });
+            it('should response message with errcode:OK and isSuccess:OK if success', done=> {
+                var corpID = "corpID";
+                var body = {
+                    isActived: true
+                };
+                request(server)
+                    .post(`/lessees/${corpID}/change-wechat-active-state`)
+                    .send(body)
+                    .set('Accept', 'application/json')
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        res.body.errmsg.should.be.eql("ok");
+                        done();
+                    });
+            });
+        });
+    });
     describe('#delete:/lessees/:lesseeID/stations/:stationID\n' +
         'input:{stationID:""}\n' +
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
@@ -313,19 +489,14 @@ describe('lessees route use case test', ()=> {
             });
         });
     });
-    describe('#post:/lessees/:corpID/change-wechat-active-state\n' +
-        'input:{isActived: true}\n' +
+    describe('#delete:/lessees/:lesseeID\n' +
+        'input:{lesseeID:""}\n' +
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
-        context('request for change lessee activeState', ()=> {
+        context('request for delete a lessee', ()=> {
             it('should response message with errcode:Fail if no a such lessee', done=> {
-                var corpID = "noCorpID";
-                var body = {
-                    isActived: true
-                };
+                var lesseeID = "noLesseeID";
                 request(server)
-                    .post(`/lessees/${corpID}/change-wechat-active-state`)
-                    .send(body)
-                    .set('Accept', 'application/json')
+                    .del(`/lessees/${lesseeID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -334,19 +505,13 @@ describe('lessees route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
-                        res.body.errmsg.should.be.eql("fail");
                         done();
                     });
             });
-            it('should response message with errcode:OK and isSuccess:OK if success', done=> {
-                var corpID = "corpID";
-                var body = {
-                    isActived: true
-                };
+            it('should response message with errcode:OK and isSuccess:true if success', done=> {
+                var lesseeID = "lesseeID";
                 request(server)
-                    .post(`/lessees/${corpID}/change-wechat-active-state`)
-                    .send(body)
-                    .set('Accept', 'application/json')
+                    .del(`/lessees/${lesseeID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -355,7 +520,6 @@ describe('lessees route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-                        res.body.errmsg.should.be.eql("ok");
                         done();
                     });
             });

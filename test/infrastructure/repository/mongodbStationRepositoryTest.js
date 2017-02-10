@@ -58,6 +58,40 @@ describe('station repository MongoDB use case test', ()=> {
             });
         });
     });
+    describe('#getStationsByID(stationID, traceContext, callback)//callback(err,stations)', ()=> {
+        context('get stations by id', ()=> {
+            it('should return null if no exits such station', done=> {
+                let stationID = "noStationID";
+                repository.getStationsByID(stationID, {}, (err, stations)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    _.isNull(stations).should.be.eql(true);
+                    done();
+                });
+            });
+            it('should return a station if stationID is "stationID"', done=> {
+                let stationID = "stationID";
+                repository.getStationsByID(stationID, {}, (err, stations)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    stations.length.should.be.eql(1);
+                    done();
+                });
+            });
+            it('should return all if stationID is ""', done=> {
+                let stationID = "";
+                repository.getStationsByID(stationID, {}, (err, stations)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    stations.length.should.be.eql(1);
+                    done();
+                });
+            });
+        });
+    });
     // describe('#getAllStationsByMemberID(memberID, traceContext, callback)//callback(err,stations)', ()=> {
     //     context('get all stations by memberID', ()=> {
     //         it('should return null if no this memberID', (done)=> {

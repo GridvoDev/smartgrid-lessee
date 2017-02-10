@@ -81,6 +81,58 @@ describe('lessee repository MongoDB and http use case test', ()=> {
             });
         });
     });
+    describe('#getLesseesByID(lesseeID, traceContext, callback)//callback(err,lessees)', ()=> {
+        context('get lessees by id', ()=> {
+            it('should return null if no exits such lessee', done=> {
+                var lesseeID = "noLesseeID";
+                repository.getLesseesByID(lesseeID, {}, (err, lessees)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    _.isNull(lessees).should.be.eql(true);
+                    done();
+                });
+            });
+            it('should return all if lessee is ""', done=> {
+                var lesseeID = "";
+                repository.getLesseesByID(lesseeID, {}, (err, lessees)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    lessees.length.should.be.eql(1);
+                    done();
+                });
+            });
+            it('should return a lessee if success', done=> {
+                var lesseeID = "lesseeID";
+               repository.getLesseesByID(lesseeID, {}, (err, lessees)=> {
+                    if (err) {
+                        done(err);
+                    }
+                   lessees.length.should.be.eql(1);
+                    done();
+                });
+            });
+        });
+    });
+    describe('#deleteLessee(lesseeID, traceContext, callback)//callback(err,isSuccess)', ()=> {
+        context('remove an account of id', ()=> {
+            it('should return null if no this account', (done)=> {
+                var lesseeID = "noLesseeID";
+                repository.deleteLessee(lesseeID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(false);
+                    done();
+                });
+            });
+            it('should return true if del one station', (done)=> {
+                var lesseeID = "lesseeID";
+                repository.deleteLessee(lesseeID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(true);
+                    done();
+                });
+            });
+        });
+    });
     after(done=> {
         let {MONGODB_SERVICE_HOST = "127.0.0.1", MONGODB_SERVICE_PORT = "27017"}= process.env;
         MongoClient.connect(`mongodb://${MONGODB_SERVICE_HOST}:${MONGODB_SERVICE_PORT}/Lessee`, (err, db)=> {
