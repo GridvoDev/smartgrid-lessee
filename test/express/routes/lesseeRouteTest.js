@@ -96,6 +96,27 @@ describe('lessees route use case test', ()=> {
                     }
                     callback(null, []);
                 };
+                mockLesseeService.registerDataSource = function (dataSource, traceContext, callback) {
+                    if (!dataSource || !dataSource.dataSourceID || !dataSource.lessee || !dataSource.station || !dataSource.dataSourceType) {
+                        callback(null, false);
+                        return;
+                    }
+                    callback(null, true);
+                }
+                mockLesseeService.delDataSource = function (dataSourceID, traceContext, callback) {
+                    if (!dataSourceID || dataSourceID == "noDataSourceID") {
+                        callback(null, false);
+                        return;
+                    }
+                    callback(null, true);
+                };
+                mockLesseeService.getDataSources = function (dataSourceID, traceContext, callback) {
+                    if (dataSourceID == "noDataSourceID") {
+                        callback(null, null);
+                        return;
+                    }
+                    callback(null, []);
+                };
                 app.set('lesseeService', mockLesseeService);
                 server = app.listen(3001, err=> {
                     if (err) {
@@ -430,6 +451,137 @@ describe('lessees route use case test', ()=> {
                         }
                         res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
                         res.body.errmsg.should.be.eql("ok");
+                        done();
+                    });
+            });
+        });
+    });
+    describe('#post:/dataSources\n' +
+        'input:{dataSourceID:""}\n' +
+        'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
+        context('request for register a dataSource', ()=> {
+            it('should response message with errcode:Fail if post body is illegal', done=> {
+                var body = {};
+                request(server)
+                    .post(`/dataSources`)
+                    .send(body)
+                    .set('Accept', 'application/json')
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        res.body.errmsg.should.be.eql("fail");
+                        done();
+                    });
+            });
+            it('should response message with errcode:OK and isSuccess:true if success', done=> {
+                var body = {
+                    dataSourceID: "station-datatype-other",
+                    dataSourceType: "dataSourceType",
+                    station: "stationID",
+                    lessee: "lesseeID"
+                };
+                request(server)
+                    .post(`/dataSources`)
+                    .send(body)
+                    .set('Accept', 'application/json')
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        res.body.errmsg.should.be.eql("ok");
+                        done();
+                    });
+            });
+        });
+    });
+    describe('#get:/dataSources\n' +
+        'input:{dataSourceID:""}\n' +
+        'output:{errcode:0,errmsg:"",datas:""}', ()=> {
+        context('request for get lessee', ()=> {
+            it('should response message with errcode:Fail if post body is illegal', done=> {
+                request(server)
+                    .get(`/dataSources?dataSourceID=noDataSourceID`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:ok', done=> {
+                request(server)
+                    .get(`/dataSources?dataSourceID=`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:ok', done=> {
+                request(server)
+                    .get(`/dataSources?dataSourceID=station-datatype-other`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
+                        done();
+                    });
+            });
+        });
+    });
+    describe('#delete:/dataSources/:dataSourceID\n' +
+        'input:{dataSourceID:""}\n' +
+        'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
+        context('request for delete a lessee', ()=> {
+            it('should response message with errcode:Fail if no a such dataSource', done=> {
+                var dataSourceID = "noDataSourceID";
+                request(server)
+                    .del(`/dataSources/${dataSourceID}`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:OK and isSuccess:true if success', done=> {
+                var dataSourceID = "station-datatype-other";
+                request(server)
+                    .del(`/dataSources/${dataSourceID}`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
                         done();
                     });
             });
