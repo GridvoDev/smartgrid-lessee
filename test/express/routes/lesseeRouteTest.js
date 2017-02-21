@@ -25,7 +25,7 @@ describe('lessees route use case test', ()=> {
                 app.use('/', lesseeRouter);
                 let mockLesseeService = {};
                 mockLesseeService.registerLessee = function (lesseeData, traceContext, callback) {
-                    if (!lesseeData || !lesseeData.lesseeID || !lesseeData.lesseeName) {
+                    if (!lesseeData || !lesseeData.lesseeID || !lesseeData.lesseeName || !lesseeData.corpID) {
                         callback(null, false);
                         return;
                     }
@@ -161,7 +161,8 @@ describe('lessees route use case test', ()=> {
             it('should response message with errcode:OK and isSuccess:true if success', done=> {
                 var body = {
                     lesseeID: "lesseeID",
-                    lesseeName: "lesseeName"
+                    lesseeName: "lesseeName",
+                    corpID: "corpID"
                 };
                 request(server)
                     .post(`/lessees`)
