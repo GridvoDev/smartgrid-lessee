@@ -15,7 +15,7 @@ describe('lessee repository MongoDB and http use case test', ()=> {
         context('save a lessee', ()=> {
             it('should return true if save success', done=> {
                 let lesseeInfo = new LesseeInfo({lesseeName: "lesseeName"});
-                let wechatInfo = new WechatInfo({corpID: "corpID",isActived: false});
+                let wechatInfo = new WechatInfo({corpID: "corpID",corpIsActived: false});
                 let lessee = new Lessee({
                     lesseeID: "lesseeID",
                     lesseeInfo: lesseeInfo,
@@ -75,7 +75,7 @@ describe('lessee repository MongoDB and http use case test', ()=> {
                     if (err) {
                         done(err);
                     }
-                    lessee.wechatInfo._corpID.should.be.eql("corpID");
+                    lessee.wechatInfo.corpID.should.be.eql("corpID");
                     done();
                 });
             });

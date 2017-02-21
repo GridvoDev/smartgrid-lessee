@@ -30,7 +30,7 @@ describe('lessees route use case test', ()=> {
                         return;
                     }
                     callback(null, true);
-                }
+                };
                 mockLesseeService.changeCorpWechatActiveState = function (corpID, isActived, traceContext, callback) {
                     if (!corpID || (isActived !== true && isActived !== false)) {
                         callback(null, false);
