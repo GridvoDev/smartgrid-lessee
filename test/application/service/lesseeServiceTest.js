@@ -2,7 +2,6 @@
 const _ = require('underscore');
 const should = require('should');
 const LesseeService = require('../../../lib/application/service/lesseeService');
-const MockLesseeService = require('../../mock/application/service/lesseeService');
 
 describe('lessee service use case test', ()=> {
     let service;
@@ -142,41 +141,41 @@ describe('lessee service use case test', ()=> {
             });
         });
     });
-    describe('#getLessees(lesseeID, traceContext, callback)//callback(err,lessees)', ()=> {
+    describe('#getLessees(lesseeID, traceContext, callback)//callback(err,lesseesJSON)', ()=> {
         context('get lessees by id', ()=> {
             it('should return null if no exits such lessee', done=> {
                 let lesseeID = "noLesseeID";
-                service.getLessees(lesseeID, {}, (err, lessees)=> {
+                service.getLessees(lesseeID, {}, (err, lesseesJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    _.isNull(lessees).should.be.eql(true);
+                    _.isNull(lesseesJSON).should.be.eql(true);
                     done();
                 });
             });
             it('should return all if lessee is ""', done=> {
                 let lesseeID = "";
-                service.getLessees(lesseeID, {}, (err, lessees)=> {
+                service.getLessees(lesseeID, {}, (err, lesseesJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    lessees.length.should.be.eql(1);
+                    lesseesJSON.length.should.be.eql(1);
                     done();
                 });
             });
             it('should return a lessee if success', done=> {
                 let lesseeID = "lesseeID";
-                service.getLessees(lesseeID, {}, (err, lessees)=> {
+                service.getLessees(lesseeID, {}, (err, lesseesJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    lessees.length.should.be.eql(1);
+                    lesseesJSON.length.should.be.eql(1);
                     done();
                 });
             });
         });
     });
-    describe('#getStations(stationID, traceContext, callback)//callback(err,stations)', ()=> {
+    describe('#getStations(stationID, traceContext, callback)//callback(err,stationsJSON)', ()=> {
         context('get stations by id', ()=> {
             let lesseeID = "lesseeID";
             let stationData = {};
@@ -191,31 +190,31 @@ describe('lessee service use case test', ()=> {
 
             it('should return null if no exits such station', done=> {
                 let stationID = "noStationID";
-                service.getStations(stationID, {}, (err, stations)=> {
+                service.getStations(stationID, {}, (err, stationsJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    _.isNull(stations).should.be.eql(true);
+                    _.isNull(stationsJSON).should.be.eql(true);
                     done();
                 });
             });
             it('should return all if station is ""', done=> {
                 let stationID = "";
-                service.getStations(stationID, {}, (err, stations)=> {
+                service.getStations(stationID, {}, (err, stationsJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    stations.length.should.be.eql(1);
+                    stationsJSON.length.should.be.eql(1);
                     done();
                 });
             });
             it('should return a station if success', done=> {
                 let stationID = "stationID";
-                service.getStations(stationID, {}, (err, stations)=> {
+                service.getStations(stationID, {}, (err, stationsJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    stations.length.should.be.eql(1);
+                    stationsJSON.length.should.be.eql(1);
                     done();
                 });
             });
@@ -267,35 +266,35 @@ describe('lessee service use case test', ()=> {
             });
         });
     });
-    describe('#getDataSources(dataSourceID, traceContext, callback)//callback(err,datas)', ()=> {
+    describe('#getDataSources(dataSourceID, traceContext, callback)//callback(err,dataSourcesJSON)', ()=> {
         context('get dataSource by id', ()=> {
             it('should return null if no exits such dataSource', done=> {
                 let dataSourceID = "noDataSourceID";
-                service.getDataSources(dataSourceID, {}, (err, datas)=> {
+                service.getDataSources(dataSourceID, {}, (err, dataSourcesJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    _.isNull(datas).should.be.eql(true);
+                    _.isNull(dataSourcesJSON).should.be.eql(true);
                     done();
                 });
             });
             it('should return all if dataSourceID is ""', done=> {
                 let dataSourceID = "";
-                service.getDataSources(dataSourceID, {}, (err, datas)=> {
+                service.getDataSources(dataSourceID, {}, (err, dataSourcesJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    datas.length.should.be.eql(1);
+                    dataSourcesJSON.length.should.be.eql(1);
                     done();
                 });
             });
             it('should return a dataSource if success', done=> {
                 let dataSourceID = "station-datatype-other";
-                service.getDataSources(dataSourceID, {}, (err, datas)=> {
+                service.getDataSources(dataSourceID, {}, (err, dataSourcesJSON)=> {
                     if (err) {
                         done(err);
                     }
-                    datas.length.should.be.eql(1);
+                    dataSourcesJSON.length.should.be.eql(1);
                     done();
                 });
             });
