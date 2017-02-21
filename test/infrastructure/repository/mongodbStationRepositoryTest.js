@@ -50,7 +50,7 @@ describe('station repository MongoDB use case test', ()=> {
                 var stationID = "stationID";
                 repository.getStationByID(lesseeID, stationID, {}, (err, station)=> {
                     station.stationID.should.be.eql('stationID');
-                    station.stationInfo._stationName.should.be.eql('stationName');
+                    station.stationInfo.stationName.should.be.eql('stationName');
                     station.lesseeID.should.be.eql('lesseeID');
                     station.members.should.be.eql(["memberID", "memberID2"]);
                     done();
