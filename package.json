@@ -17,7 +17,7 @@
   "dependencies": {
     "async": "^2.0.0-rc.6",
     "body-parser": "~1.15.1",
-    "gridvo-common-js": "^0.0.18",
+    "gridvo-common-js": "^0.0.19",
     "multer": "~1.2.0",
     "express": "~4.13.4",
     "kafka-node": "^1.0.7",
