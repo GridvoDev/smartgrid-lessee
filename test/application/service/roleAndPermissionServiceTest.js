@@ -46,11 +46,11 @@ describe('roleAndPermission service use case test', function () {
             });
         });
     });
-    describe('#obtainAllPermission(traceContext, callback)//callback(err,permissionDatas)', function () {
+    describe('#getPermissions(traceContext, callback)//callback(err,permissionDatas)', function () {
         context('obtain all permission', function () {
             it('success', function (done) {
-                service.obtainAllPermission({}, (err, permissionsJSON)=> {
-                    permissionsJSON.length.should.be.eql(1);
+                service.getPermissions({}, (err, permissions)=> {
+                    permissions.length.should.be.eql(1);
                     done();
                 });
             });
@@ -60,21 +60,21 @@ describe('roleAndPermission service use case test', function () {
         context('get permission by id', ()=> {
             it('should return null if no exits such permission', done=> {
                 let permissionID = "noPermissionID";
-                service.getPermission(permissionID, {}, (err, permissionsJSON)=> {
+                service.getPermission(permissionID, {}, (err, permission)=> {
                     if (err) {
                         done(err);
                     }
-                    _.isNull(permissionsJSON).should.be.eql(true);
+                    _.isNull(permission).should.be.eql(true);
                     done();
                 });
             });
             it('should return a permission if success', done=> {
                 let permissionID = "permissionID";
-                service.getPermission(permissionID, {}, (err, permissionsJSON)=> {
+                service.getPermission(permissionID, {}, (err, permission)=> {
                     if (err) {
                         done(err);
                     }
-                    permissionsJSON.length.should.be.eql(1);
+                    permission.permissionID.should.be.eql(permissionID);
                     done();
                 });
             });

@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const {expressZipkinMiddleware} = require("gridvo-common-js");
 const {logger, tracer} = require('./lib/util');
-const {lesseeRouter} = require('./lib/express');
+const {lesseeRouter,roleAndPermissionRouter} = require('./lib/express');
 const {
     createAuthService,
     createLesseeService,
@@ -55,6 +55,7 @@ app.use(expressZipkinMiddleware({
 //路由注册
 
 app.use('/', lesseeRouter);
+app.use('/', roleAndPermissionRouter);
 let authService = createAuthService();
 app.set('authService', authService);
 let lesseeService = createLesseeService();

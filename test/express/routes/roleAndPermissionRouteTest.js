@@ -31,11 +31,11 @@ describe('roleAndPermission route use case test', ()=> {
                     }
                     callback(null, true);
                 };
-                mockRoleAndPermissionService.obtainAllPermission = function (traceContext, callback) {
+                mockRoleAndPermissionService.getPermissions = function (traceContext, callback) {
                     callback(null, {});
                 };
                 mockRoleAndPermissionService.getPermission = function (permissionID, traceContext, callback) {
-                    if (!permissionID) {
+                    if (!permissionID || permissionID == "noPermissionID") {
                         callback(null, null);
                         return;
                     }
@@ -108,14 +108,28 @@ describe('roleAndPermission route use case test', ()=> {
             });
         });
     });
-    describe('#get:/permissions\n' +
-        'output:{errcode:0,errmsg:"",stationID:""}', ()=> {
-        context('request for obtain permissions', ()=> {
-            it('should response message with errcode:OK and permissionDatas if success', (done)=> {
-                var body = {};
+    describe('#get:/permissions/:permissionID\n' +
+        'output:{errcode:0,errmsg:"",permission:""}', ()=> {
+        context('request for get permission', ()=> {
+            it('should response message with errcode:FAIL if no a such permission', (done)=> {
+                let permissionID = "noPermissionID";
                 request(server)
-                    .get(`/permissions`)
-                    .send(body)
+                    .get(`/permissions/${permissionID}`)
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end((err, res)=> {
+                        if (err) {
+                            done(err);
+                            return;
+                        }
+                        res.body.errcode.should.be.eql(errCodeTable.FAIL.errCode);
+                        done();
+                    });
+            });
+            it('should response message with errcode:OK and permission if success', (done)=> {
+                let permissionID = "permissionID";
+                request(server)
+                    .get(`/permissions/${permissionID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -127,13 +141,14 @@ describe('roleAndPermission route use case test', ()=> {
                         done();
                     });
             });
-            it('should response message with errcode:OK and permissionDatas if success', (done)=> {
-                var body = {
-                    permissionID: "permissionID"
-                };
+        });
+    });
+    describe('#get:/permissions\n' +
+        'output:{errcode:0,errmsg:"",permissions:""}', ()=> {
+        context('request for get all permissions', ()=> {
+            it('should response message with errcode:OK and permissions if success', (done)=> {
                 request(server)
                     .get(`/permissions`)
-                    .send(body)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -300,7 +315,7 @@ describe('roleAndPermission route use case test', ()=> {
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
         context('request for delete a permission', ()=> {
             it('should response message with errcode:FAIL if no a such permission', (done)=> {
-                var permissionID = "noPermissionID";
+                let permissionID = "noPermissionID";
                 request(server)
                     .del(`/permissions/${permissionID}`)
                     .expect(200)
