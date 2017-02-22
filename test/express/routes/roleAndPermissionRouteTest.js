@@ -355,7 +355,6 @@ describe('roleAndPermission route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-                        res.body.isSuccess.should.be.eql(true);
                         done();
                     });
             });
@@ -418,7 +417,6 @@ describe('roleAndPermission route use case test', ()=> {
                             return;
                         }
                         res.body.errcode.should.be.eql(errCodeTable.OK.errCode);
-                        res.body.isSuccess.should.be.eql(true);
                         done();
                     });
             });
