@@ -171,11 +171,11 @@ describe('roleAndPermission service use case test', function () {
                     done();
                 });
             });
-            it('success', (done)=> {
+            it('fail if This role has this permission', (done)=> {
                 let permissionID = "permissionID";
                 let roleID = "roleID";
                 service.assignPermissionToRole(permissionID, roleID, {}, (err, isSuccess)=> {
-                    isSuccess.should.be.eql(true);
+                    isSuccess.should.be.eql(false);
                     done();
                 });
             });
