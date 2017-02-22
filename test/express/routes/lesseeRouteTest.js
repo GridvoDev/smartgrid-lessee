@@ -92,11 +92,14 @@ describe('lessees route use case test', ()=> {
                 mockLesseeService.getLessees = function (traceContext, callback) {
                     callback(null, []);
                 };
-                mockLesseeService.getStations = function (stationID, traceContext, callback) {
-                    if (stationID == "noStationID") {
+                mockLesseeService.getStation = function (stationID, traceContext, callback) {
+                    if (!stationID || stationID == "noStationID") {
                         callback(null, null);
                         return;
                     }
+                    callback(null, []);
+                };
+                mockLesseeService.getStations = function (traceContext, callback) {
                     callback(null, []);
                 };
                 mockLesseeService.registerDataSource = function (dataSource, traceContext, callback) {
@@ -304,13 +307,14 @@ describe('lessees route use case test', ()=> {
             });
         });
     });
-    describe('#get:/stations\n' +
+    describe('#get:/stations/:stationID\n' +
         'input:{stationID:""}\n' +
-        'output:{errcode:0,errmsg:"",lessees:""}', ()=> {
+        'output:{errcode:0,errmsg:"",station:""}', ()=> {
         context('request for get station', ()=> {
             it('should response message with errcode:Fail if post body is illegal', done=> {
+                let stationID = "noStationID";
                 request(server)
-                    .get(`/stations?stationID=noStationID`)
+                    .get(`/stations/${stationID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -323,8 +327,9 @@ describe('lessees route use case test', ()=> {
                     });
             });
             it('should response message with errcode:ok', done=> {
+                let stationID = "stationID";
                 request(server)
-                    .get(`/stations?stationID=stationID`)
+                    .get(`/stations/${stationID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -336,9 +341,15 @@ describe('lessees route use case test', ()=> {
                         done();
                     });
             });
+        });
+    });
+    describe('#get:/stations\n' +
+        'input:{stationID:""}\n' +
+        'output:{errcode:0,errmsg:"",stations:""}', ()=> {
+        context('request for get station', ()=> {
             it('should response message with errcode:ok', done=> {
                 request(server)
-                    .get(`/stations?stationID=`)
+                    .get(`/stations`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
