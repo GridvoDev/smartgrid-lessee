@@ -5,7 +5,7 @@ const muk = require('muk');
 const RoleAndPermissionService = require('../../../lib/application/service/roleAndPermissionService');
 
 describe('roleAndPermission service use case test', function () {
-    let service;
+    var service;
 
     before(()=> {
         service = new RoleAndPermissionService();
@@ -84,7 +84,7 @@ describe('roleAndPermission service use case test', function () {
     describe('#registerRole(roleData, traceContext,callback)//callback(err,isSuccess)', function () {
         context('register and save role data', function () {
             it('fail if no roleData', (done)=> {
-                let roleData = null;
+                var roleData = null;
                 service.registerRole(roleData, {}, (err, isSuccess)=> {
                     if (err) {
                         done(err);
@@ -94,7 +94,7 @@ describe('roleAndPermission service use case test', function () {
                 });
             });
             it('fail if roleData is illegal', (done)=> {
-                let roleData = {};
+                var roleData = {};
                 roleData.roleID = null;
                 service.registerRole(roleData, {}, (err, isSuccess)=> {
                     if (err) {
@@ -105,7 +105,7 @@ describe('roleAndPermission service use case test', function () {
                 });
             });
             it('success', (done)=> {
-                let roleData = {};
+                var roleData = {};
                 roleData.roleID = "roleID";
                 roleData.roleName = "roleName";
                 roleData.permissionID = "permissionID";
@@ -158,24 +158,24 @@ describe('roleAndPermission service use case test', function () {
             it('fail if no exits such permissions', (done)=> {
                 let permissionID = "noPermissionID";
                 let roleID = "roleID";
-                service.assignPermissionToRole(permissionID, roleID, {}, (err, result)=> {
-                    _.isNull(result).should.be.eql(true);
+                service.assignPermissionToRole(permissionID, roleID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(false);
                     done();
                 });
             });
             it('fail if no exits such role', (done)=> {
                 let permissionID = "permissionID";
                 let roleID = "noRoleID";
-                service.assignPermissionToRole(permissionID, roleID, {}, (err, result)=> {
-                    _.isNull(result).should.be.eql(true);
+                service.assignPermissionToRole(permissionID, roleID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(false);
                     done();
                 });
             });
             it('success', (done)=> {
                 let permissionID = "permissionID";
                 let roleID = "roleID";
-                service.assignPermissionToRole(permissionID, roleID, {}, (err, result)=> {
-                    result.roleID.should.be.eql(roleID);
+                service.assignPermissionToRole(permissionID, roleID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(true);
                     done();
                 });
             });
@@ -184,26 +184,26 @@ describe('roleAndPermission service use case test', function () {
     describe('#canclePermissionofRole(permissionID, roleID, traceContext, callback)//callback(err,isSuccess)', function () {
         context('cancle permission to one role', function () {
             it('fail if no exits such permissions', (done)=> {
-                let permissionID = "noPermissionID";
-                let roleID = "roleID";
-                service.canclePermissionofRole(permissionID, roleID, {}, (err, result)=> {
-                    _.isNull(result).should.be.eql(true);
+                var permissionID = "noPermissionID";
+                var roleID = "roleID";
+                service.canclePermissionofRole(permissionID, roleID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(false);
                     done();
                 });
             });
             it('fail if no exits such role', (done)=> {
-                let permissionID = "permissionID";
-                let roleID = "noRoleID";
-                service.canclePermissionofRole(permissionID, roleID, {}, (err, result)=> {
-                    _.isNull(result).should.be.eql(true);
+                var permissionID = "permissionID";
+                var roleID = "noRoleID";
+                service.canclePermissionofRole(permissionID, roleID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(false);
                     done();
                 });
             });
             it('success', (done)=> {
-                let permissionID = "permissionID";
-                let roleID = "roleID";
-                service.canclePermissionofRole(permissionID, roleID, {}, (err, result)=> {
-                    result.roleID.should.be.eql(roleID);
+                var permissionID = "permissionID";
+                var roleID = "roleID";
+                service.canclePermissionofRole(permissionID, roleID, {}, (err, isSuccess)=> {
+                    isSuccess.should.be.eql(true);
                     done();
                 });
             });
@@ -212,14 +212,14 @@ describe('roleAndPermission service use case test', function () {
     describe('#delPermission(permissionID, traceContext, callback)//callback(err,isSuccess)', function () {
         context('remove an permission of id', function () {
             it('should return null if no this permission', (done)=> {
-                let permissionID = "noPermissionID";
+                var permissionID = "noPermissionID";
                 service.delPermission(permissionID, {}, (err, isSuccess)=> {
                     isSuccess.should.be.eql(false);
                     done();
                 });
             });
             it('should return true if del one station', (done)=> {
-                let permissionID = "permissionID";
+                var permissionID = "permissionID";
                 service.delPermission(permissionID, {}, (err, isSuccess)=> {
                     isSuccess.should.be.eql(true);
                     done();

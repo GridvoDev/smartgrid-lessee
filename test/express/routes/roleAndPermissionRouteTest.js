@@ -10,8 +10,8 @@ const errCodeTable = require('../../../lib/express/util/errCode.js');
 const {expressZipkinMiddleware, createZipkinTracer} = require("gridvo-common-js");
 
 describe('roleAndPermission route use case test', ()=> {
-    let app;
-    let server;
+    var app;
+    var server;
     before(done=> {
         function setupExpress() {
             return new Promise((resolve, reject)=> {
@@ -110,7 +110,7 @@ describe('roleAndPermission route use case test', ()=> {
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
         context('request for register a permission', ()=> {
             it('should response message with errcode:FAIL if post body is illegal', (done)=> {
-                let body = {};
+                var body = {};
                 request(server)
                     .post(`/permissions`)
                     .send(body)
@@ -126,7 +126,7 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:OK if success', (done)=> {
-                let body = {
+                var body = {
                     permissionID: "permissionID",
                     permissionName: "permissionName"
                 };
@@ -206,7 +206,7 @@ describe('roleAndPermission route use case test', ()=> {
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
         context('request for register a role', ()=> {
             it('should response message with errcode:FAIL if post body is illegal', (done)=> {
-                let body = {};
+                var body = {};
                 request(server)
                     .post(`/roles`)
                     .send(body)
@@ -222,7 +222,7 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:OK if success', (done)=> {
-                let body = {
+                var body = {
                     roleID: "roleID",
                     roleName: "roleName",
                     permissionID: "permissionID"
@@ -303,8 +303,8 @@ describe('roleAndPermission route use case test', ()=> {
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
         context('request for assign permission to role', ()=> {
             it('should response message with errcode:FAIL if no a such role', (done)=> {
-                let roleID = "noRoleID";
-                let body = {
+                var roleID = "noRoleID";
+                var body = {
                     permissionID: "permissionID"
                 };
                 request(server)
@@ -322,8 +322,8 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:FAIL if no a such permission', (done)=> {
-                let roleID = "roleID";
-                let body = {
+                var roleID = "roleID";
+                var body = {
                 };
                 request(server)
                     .post(`/roles/${roleID}/permissions`)
@@ -340,8 +340,8 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:OK and isSuccesss:true if success', (done)=> {
-                let roleID = "roleID";
-                let body = {
+                var roleID = "roleID";
+                var body = {
                     permissionID: "permissionID"
                 };
                 request(server)
@@ -365,8 +365,8 @@ describe('roleAndPermission route use case test', ()=> {
         'output:{errcode:0,errmsg:"",isSuccess:""}', ()=> {
         context('request for cancle permission of role', ()=> {
             it('should response message with errcode:FAIL if no a such role', (done)=> {
-                let roleID = "noRoleID";
-                let body = {
+                var roleID = "noRoleID";
+                var body = {
                     permissionID: "permissionID"
                 };
                 request(server)
@@ -384,8 +384,8 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:FAIL if no a such permission', (done)=> {
-                let roleID = "roleID";
-                let body = {
+                var roleID = "roleID";
+                var body = {
                 };
                 request(server)
                     .del(`/roles/${roleID}/permissions`)
@@ -402,8 +402,8 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:OK and isSuccesss:true if success', (done)=> {
-                let roleID = "roleID";
-                let body = {
+                var roleID = "roleID";
+                var body = {
                     permissionID: "permissionID"
                 };
                 request(server)
@@ -442,7 +442,7 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:OK and isSuccess:true if success', (done)=> {
-                let permissionID = "permissionID";
+                var permissionID = "permissionID";
                 request(server)
                     .del(`/permissions/${permissionID}`)
                     .expect(200)
@@ -478,7 +478,7 @@ describe('roleAndPermission route use case test', ()=> {
                     });
             });
             it('should response message with errcode:OK and isSuccess:true if success', (done)=> {
-                let roleID = "roleID";
+                var roleID = "roleID";
                 request(server)
                     .del(`/roles/${roleID}`)
                     .expect(200)
