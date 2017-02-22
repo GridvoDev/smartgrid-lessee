@@ -46,7 +46,7 @@ describe('roleAndPermission service use case test', function () {
             });
         });
     });
-    describe('#getPermissions(traceContext, callback)//callback(err,permissionDatas)', function () {
+    describe('#getPermissions(traceContext, callback)//callback(err,permissions)', function () {
         context('obtain all permission', function () {
             it('success', function (done) {
                 service.getPermissions({}, (err, permissions)=> {

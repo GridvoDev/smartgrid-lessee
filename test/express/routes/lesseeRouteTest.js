@@ -82,11 +82,14 @@ describe('lessees route use case test', ()=> {
                     }
                     callback(null, true);
                 };
-                mockLesseeService.getLessees = function (lesseeID, traceContext, callback) {
-                    if (lesseeID == "noLesseeID") {
+                mockLesseeService.getLessee = function (lesseeID, traceContext, callback) {
+                    if (!lesseeID || lesseeID == "noLesseeID") {
                         callback(null, null);
                         return;
                     }
+                    callback(null, []);
+                };
+                mockLesseeService.getLessees = function (traceContext, callback) {
                     callback(null, []);
                 };
                 mockLesseeService.getStations = function (stationID, traceContext, callback) {
@@ -246,13 +249,14 @@ describe('lessees route use case test', ()=> {
             });
         });
     });
-    describe('#get:/lessees\n' +
+    describe('#get:/lessees/:lesseeID\n' +
         'input:{lesseeID:""}\n' +
-        'output:{errcode:0,errmsg:"",lessees:""}', ()=> {
+        'output:{errcode:0,errmsg:"",lessee:""}', ()=> {
         context('request for get lessee', ()=> {
             it('should response message with errcode:Fail if post body is illegal', done=> {
+                let lesseeID = "noLesseeID";
                 request(server)
-                    .get(`/lessees?lesseeID=noLesseeID`)
+                    .get(`/lessees/${lesseeID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -265,8 +269,9 @@ describe('lessees route use case test', ()=> {
                     });
             });
             it('should response message with errcode:ok', done=> {
+                let lesseeID = "lesseeID";
                 request(server)
-                    .get(`/lessees?lesseeID=`)
+                    .get(`/lessees/${lesseeID}`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {
@@ -278,9 +283,14 @@ describe('lessees route use case test', ()=> {
                         done();
                     });
             });
+        });
+    });
+    describe('#get:/lessees\n' +
+        'output:{errcode:0,errmsg:"",lessees:""}', ()=> {
+        context('request for get lessee', ()=> {
             it('should response message with errcode:ok', done=> {
                 request(server)
-                    .get(`/lessees?lesseeID=lesseeID`)
+                    .get(`/lessees`)
                     .expect(200)
                     .expect('Content-Type', /json/)
                     .end((err, res)=> {

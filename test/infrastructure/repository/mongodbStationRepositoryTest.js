@@ -27,28 +27,18 @@ describe('station repository MongoDB use case test', ()=> {
             });
         });
     });
-    describe('#getStationByID(lesseeID, stationID, traceContext, callback)//callback(err,station)', ()=> {
+    describe('#getStationByID(stationID, traceContext, callback)//callback(err,station)', ()=> {
         context('get an station for id', ()=> {
-            it('should return null if no this lessee', (done)=> {
-                var lesseeID = "noLesseeID";
-                var stationID = "stationID";
-                repository.getStationByID(lesseeID, stationID, {}, (err, station)=> {
-                    _.isNull(station).should.be.eql(true);
-                    done();
-                });
-            });
             it('should return null if no this station', (done)=> {
-                var lesseeID = "lesseeID";
                 var stationID = "noStationID";
-                repository.getStationByID(lesseeID, stationID, {}, (err, station)=> {
+                repository.getStationByID(stationID, {}, (err, station)=> {
                     _.isNull(station).should.be.eql(true);
                     done();
                 });
             });
             it('should return station if success', (done)=> {
-                var lesseeID = "lesseeID";
                 var stationID = "stationID";
-                repository.getStationByID(lesseeID, stationID, {}, (err, station)=> {
+                repository.getStationByID(stationID, {}, (err, station)=> {
                     station.stationID.should.be.eql('stationID');
                     station.stationInfo.stationName.should.be.eql('stationName');
                     station.lesseeID.should.be.eql('lesseeID');
@@ -58,31 +48,10 @@ describe('station repository MongoDB use case test', ()=> {
             });
         });
     });
-    describe('#getStationsByID(stationID, traceContext, callback)//callback(err,stations)', ()=> {
+    describe('#getStations(traceContext, callback)//callback(err,stations)', ()=> {
         context('get stations by id', ()=> {
-            it('should return null if no exits such station', done=> {
-                let stationID = "noStationID";
-                repository.getStationsByID(stationID, {}, (err, stations)=> {
-                    if (err) {
-                        done(err);
-                    }
-                    _.isNull(stations).should.be.eql(true);
-                    done();
-                });
-            });
-            it('should return a station if stationID is "stationID"', done=> {
-                let stationID = "stationID";
-                repository.getStationsByID(stationID, {}, (err, stations)=> {
-                    if (err) {
-                        done(err);
-                    }
-                    stations.length.should.be.eql(1);
-                    done();
-                });
-            });
             it('should return all if stationID is ""', done=> {
-                let stationID = "";
-                repository.getStationsByID(stationID, {}, (err, stations)=> {
+                repository.getStations({}, (err, stations)=> {
                     if (err) {
                         done(err);
                     }

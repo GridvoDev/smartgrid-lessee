@@ -141,41 +141,44 @@ describe('lessee service use case test', ()=> {
             });
         });
     });
-    describe('#getLessees(lesseeID, traceContext, callback)//callback(err,lesseesJSON)', ()=> {
+    describe('#getLessee(lesseeID, traceContext, callback)//callback(err,lessee)', ()=> {
         context('get lessees by id', ()=> {
             it('should return null if no exits such lessee', done=> {
                 let lesseeID = "noLesseeID";
-                service.getLessees(lesseeID, {}, (err, lesseesJSON)=> {
+                service.getLessee(lesseeID, {}, (err, lessee)=> {
                     if (err) {
                         done(err);
                     }
-                    _.isNull(lesseesJSON).should.be.eql(true);
-                    done();
-                });
-            });
-            it('should return all if lessee is ""', done=> {
-                let lesseeID = "";
-                service.getLessees(lesseeID, {}, (err, lesseesJSON)=> {
-                    if (err) {
-                        done(err);
-                    }
-                    lesseesJSON.length.should.be.eql(1);
+                    _.isNull(lessee).should.be.eql(true);
                     done();
                 });
             });
             it('should return a lessee if success', done=> {
                 let lesseeID = "lesseeID";
-                service.getLessees(lesseeID, {}, (err, lesseesJSON)=> {
+                service.getLessee(lesseeID, {}, (err, lessee)=> {
                     if (err) {
                         done(err);
                     }
-                    lesseesJSON.length.should.be.eql(1);
+                    lessee.lesseeID.should.be.eql(lesseeID);
                     done();
                 });
             });
         });
     });
-    describe('#getStations(stationID, traceContext, callback)//callback(err,stationsJSON)', ()=> {
+    describe('#getLessees(traceContext, callback)//callback(err,lessees)', ()=> {
+        context('get lessees by id', ()=> {
+            it('should return a lessee if success', done=> {
+                service.getLessees({}, (err, lessees)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    lessees.length.should.be.eql(1);
+                    done();
+                });
+            });
+        });
+    });
+    describe('#getStation(stationID, traceContext, callback)//callback(err,stationsJSON)', ()=> {
         context('get stations by id', ()=> {
             let lesseeID = "lesseeID";
             let stationData = {};
@@ -190,31 +193,45 @@ describe('lessee service use case test', ()=> {
 
             it('should return null if no exits such station', done=> {
                 let stationID = "noStationID";
-                service.getStations(stationID, {}, (err, stationsJSON)=> {
+                service.getStation(stationID, {}, (err, station)=> {
                     if (err) {
                         done(err);
                     }
-                    _.isNull(stationsJSON).should.be.eql(true);
-                    done();
-                });
-            });
-            it('should return all if station is ""', done=> {
-                let stationID = "";
-                service.getStations(stationID, {}, (err, stationsJSON)=> {
-                    if (err) {
-                        done(err);
-                    }
-                    stationsJSON.length.should.be.eql(1);
+                    _.isNull(station).should.be.eql(true);
                     done();
                 });
             });
             it('should return a station if success', done=> {
                 let stationID = "stationID";
-                service.getStations(stationID, {}, (err, stationsJSON)=> {
+                service.getStation(stationID, {}, (err, station)=> {
                     if (err) {
                         done(err);
                     }
-                    stationsJSON.length.should.be.eql(1);
+                    station.stationID.should.be.eql(stationID);
+                    done();
+                });
+            });
+        });
+    });
+    describe('#getStations(traceContext, callback)//callback(err,stationsJSON)', ()=> {
+        context('get stations by id', ()=> {
+            let lesseeID = "lesseeID";
+            let stationData = {};
+            stationData.stationID = "stationID";
+            stationData.stationName = "stationName";
+            before(done =>{
+                service.addStationToLessee(lesseeID, stationData, {}, (err, stationID)=> {
+                    stationID.should.be.eql("stationID");
+                    done();
+                });
+            });
+
+            it('should return a station if success', done=> {
+                service.getStations({}, (err, stations)=> {
+                    if (err) {
+                        done(err);
+                    }
+                    stations.length.should.be.eql(1);
                     done();
                 });
             });
