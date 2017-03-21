@@ -23,4 +23,20 @@ spec:
           value: "true"
         - name: IS_DEBUG
           value: "true"
+        - name: ZOOKEEPER_SERVICE_HOST
+          value: "zookeeper"
+        - name: ZOOKEEPER_SERVICE_PORT
+          value: "2181"
+        - name: GRIDVO_WECHAT_SERVICE_HOST
+          value: "gridvo-wechat"
+        - name: GRIDVO_WECHAT_SERVICE_PORT
+          value: "80"
+        - name: ZIPKIN_SERVICE_HOST
+          value: "zipkin"
+        - name: ZIPKIN_HTTP_TRANSPORT_PORT
+          value: "9411"
+        - name: MONGODB_SERVICE_HOST
+          value: "mongodb"
+        - name: MONGODB_SERVICE_PORT
+          value: "27017"
              
